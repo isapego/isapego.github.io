@@ -24,6 +24,7 @@ Now try to write some code to check how it all works. I'm going to use simple (i
 
 ```cpp
 using namespace ignite;
+using namespace ignite::cache;
 
 IgniteConfiguration cfg;
 
@@ -56,8 +57,9 @@ public:
             std::string value = event.HasValue() ? event.GetValue() : "<none>";
 
             std::cout << "key=" << event.GetKey() << ", "
-                      << "oldValue=" << oldValue << ", " 
-                      << "value=" << value << std::endl;
+                      << "oldValue='" << oldValue << "', "
+                      << "value='" << value << "'" 
+                      << std::endl;
         }
     }
 };
@@ -117,10 +119,48 @@ cache.Remove(2);
 Compiling, running and getting the following output:
 
 ```
+[21:51:14]    __________  ________________
+[21:51:14]   /  _/ ___/ |/ /  _/_  __/ __/
+[21:51:14]  _/ // (7 7    // /  / / / _/
+[21:51:14] /___/\___/_/|_/___/ /_/ /___/
+[21:51:14]
+[21:51:14] ver. 2.0.0-SNAPSHOT#20170315-sha1:159feab6
+[21:51:14] 2017 Copyright(C) Apache Software Foundation
+[21:51:14]
+[21:51:14] Ignite documentation: http://ignite.apache.org
+[21:51:14]
+[21:51:14] Quiet mode.
+[21:51:14]   ^-- Logging to file 'C:\reps\incubator-ignite\target\release-package\work\log\ignite-3d801ffe.0.log'
+[21:51:14]   ^-- To see **FULL** console log here add -DIGNITE_QUIET=false or "-v" to ignite.{sh|bat}
+[21:51:14]
+[21:51:14] OS: Windows 10 10.0 amd64
+[21:51:14] VM information: Java(TM) SE Runtime Environment 1.8.0_121-b13 Oracle Corporation Java HotSpot(TM) 64-Bit Server VM 25.121-b13
+[21:51:14] Configured plugins:
+[21:51:14]   ^-- None
+[21:51:14]
+[21:51:24] Message queue limit is set to 0 which may lead to potential OOMEs when running cache operations in FULL_ASYNC or PRIMARY_SYNC modes due to message queues growth on sender and receiver sides.
+[21:51:24] Security status [authentication=off, tls/ssl=off]
+[21:51:27] Performance suggestions for grid  (fix if possible)
+[21:51:27] To disable, set -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
+[21:51:27]   ^-- Enable G1 Garbage Collector (add '-XX:+UseG1GC' to JVM options)
+[21:51:27]   ^-- Set max direct memory size if getting 'OOME: Direct buffer memory' (add '-XX:MaxDirectMemorySize=<size>[g|G|m|M|k|K]' to JVM options)
+[21:51:27]   ^-- Disable processing of calls to System.gc() (add '-XX:+DisableExplicitGC' to JVM options)
+[21:51:27] Refer to this page for more performance suggestions: https://apacheignite.readme.io/docs/jvm-and-system-tuning
+[21:51:27]
+[21:51:27] To start Console Management & Monitoring run ignitevisorcmd.{sh|bat}
+[21:51:27]
+[21:51:27] Ignite node started OK (id=3d801ffe)
+[21:51:27] Topology snapshot [ver=1, servers=1, clients=0, CPUs=4, heap=0.89GB]
 
+key=1, oldValue='<none>', value='Hello Continuous Queries!'
+key=2, oldValue='<none>', value='Some other string'
+key=1, oldValue='Hello Continuous Queries!', value='Rewriting first entry'
+key=2, oldValue='Some other string', value='<none>'
+
+Press any key to exit.
 ```
 
-That's all for today. You can find a complete code [here](TODO).
+That's all for today. You can find a complete code [in GitHub](https://github.com/isapego/isapego.github.io/tree/master/snippets/continuous_queries_1_9.cpp).
 
 Next time I'm going to write more about C++ API of Apache Ignite. Now, when I think about it maybe that's what I should have started from.
 
