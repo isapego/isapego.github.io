@@ -20,9 +20,9 @@ Out of these three only Event Listener is mandatory part, while both Initial Que
 
 Apache Ignite has C++ API which is called Apache Ignite C++. It allows using Ignite features from native C++ applications.
 
-So what about Apache Ignite C++? Until Apache Ignite 1.9 there was no support for Continuous Queries in C++ API. But now Continuous Queries finally there so lets [take a look](https://apacheignite-cpp.readme.io/docs/continuous-queries). It seems that Remote Filters are not yet supported (though support for Remote Filters in C++ is planned for 2.0).
+So what about Continuous Queries in Apache Ignite C++? Until Apache Ignite 1.9 there was no support for Continuous Queries in C++ API. But now Continuous Queries finally there so lets [take a look](https://apacheignite-cpp.readme.io/docs/continuous-queries). It seems that Remote Filters are not yet supported (though they are planned for 2.0).
 
-Now try to write some code to check how it all works. I'm going to use simple (int -> string) cache:
+Now lets try writing some code to check how it all works. I'm going to use simple (int -> string) cache:
 
 ```cpp
 using namespace ignite;
@@ -67,7 +67,7 @@ public:
 };
 ```
 
-Pretty useless listener but good enough for test purpose. Now lets finally create and start our `ContinuousQuery`. I'm not going to use initial query here as there is nothing special or new. You can look at the [documentation](https://apacheignite-cpp.readme.io/docs/continuous-queries#section-initial-query) if you want to see how to use one.
+Pretty useless listener but good enough for testing purposes. Lets finally create and start our `ContinuousQuery`. I'm not going to use initial query here as there is nothing special or new. You can look at the [documentation](https://apacheignite-cpp.readme.io/docs/continuous-queries#section-initial-query) if you want to see how to use one.
 
 ```cpp
 // Creating my listener.
@@ -80,7 +80,7 @@ ContinuousQuery<int32_t, std::string> qry(lsnr);
 ContinuousQueryHandle<int32_t, std::string> handle = cache.QueryContinuous(qry);
 ```
 
-Compiling and... getting an error?!
+Compiling the code and... getting an error.
 
 ```
 cannot convert parameter 1 from 'MyListener' to 'ignite::Reference<T>'
@@ -88,13 +88,13 @@ cannot convert parameter 1 from 'MyListener' to 'ignite::Reference<T>'
 
 # Ownership problem
 
-OK, it seems that `ContinuousQuery` constructor expects something called `ignite::Reference`. With a little help of [documentation](https://apacheignite-cpp.readme.io/docs/objects-lifetime) we understand why. Ignite wants to know how to treat ownership problem for my listener. It does not know if it should make a copy or if it should just keep a reference. So Ignite provides us with a mechanism to deal with ownership problem and it's called `ignite::Reference`. If some function accepts `ignite::Reference<T>` it means that you can pass instance of a type `T` in one of the following ways:
- - `ignite::MakeReference(obj)` - simply pass `obj` instance by reference.
- - `ignite::MakeReferenceFromCopy(obj)` - copy a `obj` and pass a new instance.
- - `MakeReferenceFromOwningPointer(ptr)` - pass pointer. You can keep pointer to a passed object but ownership is passed to Ignite meaning Ignite is now responsible for object destruction.
+OK, it seems that `ContinuousQuery` constructor expects something called `ignite::Reference`. With a little help of the [documentation](https://apacheignite-cpp.readme.io/docs/objects-lifetime) we can understand why. Ignite wants to know how to handle ownership problem for the listener. It does not know if it should make a copy or if it should just keep a reference. So Ignite provides us with a mechanism to deal with this problem and it's called `ignite::Reference`. If some function accepts `ignite::Reference<T>` it means that you can pass instance of a type `T` in one of the following ways:
+ - `ignite::MakeReference(obj)` - simply pass `obj` instance by a reference.
+ - `ignite::MakeReferenceFromCopy(obj)` - copy an `obj` and pass a new instance.
+ - `MakeReferenceFromOwningPointer(ptr)` - pass pointer. You can keep pointer to a passed object but ownership is passed to Ignite. This means that Ignite is now responsible for object destruction.
  - `MakeReferenceFromSmartPointer(smartPtr)` - pass a smart pointer. You can pass your `std::shared_ptr`, `std::auto_ptr`, `boost::shared_ptr`, etc, using this function. This is going to work like your ordinary smart pointer passing.
 
-So let me fix the code above. I'm going to pass my listener as a copy because it's small, has no inner state anyway and I don't need to keep reference to it in my application code:
+So let me fix the code above. I'm going to pass my listener as a copy because it's small, has no inner state and I have no reason to keep reference to it in my application code:
 
 ```cpp
 // Creating my listener.
