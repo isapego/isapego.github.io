@@ -6,6 +6,14 @@
 // Colors
 $blue: #4183C4;
 
+$base-bg-color:#FFF;
+$reserve-bg-color:darken($base-bg-color, 5%);
+$base-border-color:darken($reserve-bg-color, 5%);
+$base-font-color:#333;
+$reserve-font-color:lighten($base-font-color, 40%);
+$primary-color:#4183C4;
+$secondary-color:#c6538c;
+
 // Grays
 $black: #000;
 $darkerGray: #222;
@@ -18,6 +26,7 @@ $white: #fff;
 $helvetica: Helvetica, Arial, sans-serif;
 $helveticaNeue: "Helvetica Neue", Helvetica, Arial, sans-serif;
 $georgia: Georgia, serif;
+$code-font-family: 'Consolas', 'Lucida Console', 'Courier New';
 
 // Mobile breakpoints
 @mixin mobile {
