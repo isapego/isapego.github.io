@@ -162,7 +162,7 @@ key=2, oldValue='Some other string', value='<none>'
 Press any key to exit.
 ```
 
-That's all for today. You can find a complete code [in GitHub](https://github.com/isapego/isapego.github.io/tree/master/snippets/continuous_queries_1_9.cpp).
+That's all for today. You can find a complete code at [GitHub](https://github.com/isapego/isapego.github.io/tree/master/snippets/continuous_queries_1_9.cpp).
 
 Next time I'm going to write more about C++ API of Apache Ignite.
 
