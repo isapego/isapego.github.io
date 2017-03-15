@@ -3,6 +3,8 @@ layout: post
 title: Continuous Queries in Apache Ignite C++ 1.9
 ---
 
+![ignite logo](../images/ignite_logo.png)
+
 Hello. As some of you probably know Apache Ignite 1.9 has been [released](https://blogs.apache.org/ignite/entry/apache-ignite-1-9-released) last week and it brings some cool features. One of them is Continues Queries for Apache Ignite C++ and this is what I want to write about today.
 
 # Continuous Queries
