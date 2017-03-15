@@ -166,4 +166,4 @@ That's all for today. You can find a complete code [in GitHub](https://github.co
 
 Next time I'm going to write more about C++ API of Apache Ignite. Now, when I think about it maybe that's what I should have started from.
 
-Anyway I hope this was helpful for you.
+Anyway I hope this was helpful.
