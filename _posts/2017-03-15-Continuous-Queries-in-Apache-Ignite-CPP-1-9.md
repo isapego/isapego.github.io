@@ -7,20 +7,20 @@ Hello. As some of you probably know Apache Ignite 1.9 was [released](https://blo
 
 ![ignite logo](../images/ignite_logo.png)
 
-# Continuous Queries
+# Short introduction to Continuous Queries
 
 [Continuous Queries](https://apacheignite.readme.io/docs/continuous-queries) is the mechanism in Apache Ignite that allows you to track data modifications on caches. It consists of several parts:
  - Initial Query. This is a simple query which is used when `ContinuousQuery` is registered. It is useful to get consistent picture of the current state of the cache.
- - Remote Filter. This class deployed on remote nodes where cache data is stored and used to filter-out data modification events which user does not need. These are useful to reduce network traffic and improve overall system performance.
- - Event Listener. This is observer class which is deployed locally on the node and gets notified every time data gets modified in cache.
+ - Remote Filter. This class is deployed on remote nodes where cache data is stored. It is used to filter-out data modification events which user does not need. Using these, one can reduce network traffic and improve overall system performance.
+ - Event Listener. This is observer class which is deployed locally on the node. It gets notified every time data is modified in cache.
 
-Out of these three only Event Listener is mandatory part, while both Initial Query and Remote Filter are optional.
+Out of these three only Event Listener is a mandatory part of the Continuous Query, while both Initial Query and Remote Filter are optional.
 
-# Continuous Queries in Apache Ignite C++
+# Continuous Queries in C++ API
 
 Apache Ignite has C++ API which is called Apache Ignite C++. It allows using Ignite features from native C++ applications.
 
-So what about Continuous Queries in Apache Ignite C++? Until Apache Ignite 1.9 there was no support for Continuous Queries in C++ API. But now Continuous Queries finally there so lets [take a look](https://apacheignite-cpp.readme.io/docs/continuous-queries). It seems that Remote Filters are not yet supported (though they are planned for 2.0).
+So what about Continuous Queries in Apache Ignite C++? Until Apache Ignite 1.9 there was no support for Continuous Queries in C++ API. But now Continuous Queries are finally here so lets [take a look](https://apacheignite-cpp.readme.io/docs/continuous-queries). Remote Filters are not yet supported in C++ API (though they are planned for 2.0).
 
 Now lets try writing some code to check how it all works. I'm going to use simple (int -> string) cache:
 
@@ -52,9 +52,9 @@ public:
         {
             const CacheEntryEvent<int32_t, std::string>& event = evts[i];
 
-            // There may be or may be not value/oldValue in the event. Absent value means
-            // that the cache entry has been removed. Absent old value means new value
-            // has been added.
+            // There may be or may be not value or old value in the event. If the value
+            // is absent that means that the cache entry has been removed. if the old 
+            // value is absent then a new value has been added.
             std::string oldValue = event.HasOldValue() ? event.GetOldValue() : "<none>";
             std::string value = event.HasValue() ? event.GetValue() : "<none>";
 
@@ -88,7 +88,7 @@ cannot convert parameter 1 from 'MyListener' to 'ignite::Reference<T>'
 
 # Ownership problem
 
-OK, it seems that `ContinuousQuery` constructor expects something called `ignite::Reference`. With a little help of the [documentation](https://apacheignite-cpp.readme.io/docs/objects-lifetime) we can understand why. Ignite wants to know how to handle ownership problem for the listener. It does not know if it should make a copy or if it should just keep a reference. So Ignite provides us with a mechanism to deal with this problem and it's called `ignite::Reference`. If some function accepts `ignite::Reference<T>` it means that you can pass instance of a type `T` in one of the following ways:
+Looks like `ContinuousQuery` constructor expects something called `ignite::Reference`. With a little help of the [documentation](https://apacheignite-cpp.readme.io/docs/objects-lifetime) we can understand why. Ignite wants to know how to handle ownership problem for the listener. It does not know if it should make a copy or if it should just keep a reference. So Ignite provides us with a mechanism to deal with this problem and it's called `ignite::Reference`. If some function accepts `ignite::Reference<T>` it means that you can pass instance of a type `T` in one of the following ways:
  - `ignite::MakeReference(obj)` - simply pass `obj` instance by a reference.
  - `ignite::MakeReferenceFromCopy(obj)` - copy an `obj` and pass a new instance.
  - `MakeReferenceFromOwningPointer(ptr)` - pass pointer. You can keep pointer to a passed object but ownership is passed to Ignite. This means that Ignite is now responsible for object destruction.
@@ -166,4 +166,4 @@ That's all for today. You can find a complete code at [GitHub](https://github.co
 
 Next time I'm going to write more about C++ API of Apache Ignite.
 
-Anyway I hope this was helpful.
+I hope this was helpful.
