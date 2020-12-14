@@ -4,11 +4,11 @@ title: About
 permalink: /about/
 ---
 
-Software Developer since 2011.
+Hi!
 
-Have been developing all kind of software mostly in C, C++ and eventually in Java.
+I'm writing all kind of software since 2011, mostly in C++, C and sometimes in Java and [Rust](https://www.rust-lang.org).
 
-English is not my native language so if (or should I say "when") you notice some mistakes, please don't hesitate to contact me via email. Any help appreciated.
+English is not my native language so if you notice any mistake, please don't hesitate to contact me via email. Any help appreciated.
 
 ### Contact me
 
